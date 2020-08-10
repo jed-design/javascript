@@ -1,0 +1,72 @@
+﻿<html>
+<head>
+	<title>80 cols</title>
+</head>
+
+<body>
+<p>Script that fits any text in a 80 cols wide table, with ascii borders
+</p>
+<form>
+	<textarea name="text" id="text" cols="80" rows="10">Put text here</textarea>
+</form>
+<br>
+
+<br>
+<button onClick="wrapper()">Wrap now!</button>
+<br>
+<br>
+
+
+Demo below:<br>
+<p id="demo" style="background-color: #ff0; font-family: monospace;">  </p>
+
+
+<script>
+function wrapper(){
+	var cols = 80;   											// total width of the printed text including borders and space
+	var space = 3;												// space between text and bordes
+	var spos = Number(0);										// the position for stationg searching for line cut
+	var cpos = Number(0);										// the position where to start the cut 
+	var lineln = cols - 2 - 2 * space;							// the length the arranged text strings shall have
+	var txt = document.getElementById("text").value;			// get the text to process
+	var ln = Number(txt.length);								// length of the text to process
+	var move = "";												// The position to move the pointer to where the end cut should be (the length to the point to seaarch for)			
+	var sString = "";  											// sString, the varible name for the subString that makes one row 
+	var sol = "|" + "&nbsp;".repeat(space);						// Start Of an output Line
+	var eol = "&nbsp;".repeat(space) + "|<br>";					// End Of an output Line
+	var filler = "";											// this fills up the end of cuts rows so they allways become "cols" columns wide.
+	var firstRow = "+".repeat(cols) + "<br>";					// this is the first row if the output
+	var secondRow = "|" + "&nbsp;".repeat(cols-2) + "|<br>";	// this is the 2nd row of the output.
+
+	output = firstRow + secondRow;						
+
+	// we start to build the content below!
+	 spos = lineln;										// sets the spos, the cut position to start with
+	 var i = 0;
+	 var bla = Number(0);
+	 
+	while (spos < ln){
+		move = txt.lastIndexOf(" ", spos);								// get the point to move the pointer to get to the end cut position.
+		sString = txt.slice(cpos, move);								// we cut out the substring
+		sString = sString.replace(/  /g, " ");							// cleans doubble spaces, carrige returns acts like spaces in the output
+		sString = sString.replace(/\n|\r/g, "");						// cleans carrige returns.
+		filler = lineln-sString.length + 0;
+		output += sol + sString + "&nbsp;".repeat(filler) + eol;		// this is the arranged content
+		var bla = (sString + "&nbsp;".repeat(filler)).length;
+		cpos = move + 1;												// moves the pointer to where we have cutted.
+		spos = cpos + lineln;											// moves the point to where starting looking for " " for the next cut.
+		filler = 0;
+		i++;
+	}
+	sString = txt.slice(cpos, ln);										// get the last part of the text
+	filler = lineln-sString.length;										// get the length of the filler
+	output += sol + sString + "&nbsp;".repeat(filler) + eol;			// add the last part of the tet
+	output += secondRow + firstRow;										// adds the last 2 rows	
+	document.getElementById("demo").innerHTML += output;				// prints the output
+}
+
+</script>
+
+</body>
+
+</html>
