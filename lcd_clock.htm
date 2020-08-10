@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!---  The order is 1 and 2 for hours, 5 for semi-colon, 3 and 4 for minutes , 6 and 7 for seconds, 8 for second semi colon--->
+<style>
+body {
+	background-color: #aaa;
+	color: #000;
+}
+
+.sp1 {
+	position: absolute;
+	left: 100px;
+	width: 150;
+	}
+	
+.sp2 {
+	position: absolute;
+	left: 200px;
+	width: 150;
+	}
+	
+.sp7 {
+	position: absolute;
+	left: 300px;
+	width: 50;
+	}
+	
+.sp3 {
+	position: absolute;
+	left: 350px;
+	width: 150;
+	}
+	
+.sp4 {
+	position: absolute;
+	left: 450px;
+	width: 150;
+	}
+	
+
+.sp8 {
+	position: absolute;
+	left: 550px;
+	width: 50;
+	}
+
+
+.sp5 {
+	position: absolute;
+	left: 600px;
+	width: 150;
+	}
+	
+.sp6 {
+	position: absolute;
+	left: 700px;
+	width: 150;
+	}
+	
+
+
+table {
+	background-color: #999;
+	// border: 1px solid black;
+	color: #000;
+	padding: 0px;
+}
+
+
+td {
+	width: 20px;
+	border: 1px solid black;
+}
+
+tr {
+	height: 24px;
+	}
+
+</style>
+</head>
+<body onLoad="lcd()">
+
+
+<!- ****** First we set upp the positions for the digits and and the semi-colon **** ->
+
+<div id="spname1" class="sp1"></div>
+<div id="spname2" class="sp2"></div>
+<div id="spname7" class="sp7">
+<table>
+<tr><td></td></tr>
+<tr><td bgcolor="#0e0"></td></tr>
+<tr><td></td></tr>
+<tr><td bgcolor="#0e0"></td></tr>
+<tr><td></td></tr>
+</table>
+</div>  <!--- 5 is the semi-colon --->
+<div id="spname3" class="sp3"></div>
+<div id="spname4" class="sp4"></div>
+<div id="spname8" class="sp8"> <!--- 8 is the second semi-colon --->
+<table>
+<tr><td></td></tr>
+<tr><td bgcolor="#0e0"></td></tr>
+<tr><td></td></tr>
+<tr><td bgcolor="#0e0"></td></tr>
+<tr><td></td></tr>
+</table></div>
+<div id="spname5" class="sp5"></div>
+<div id="spname6" class="sp6"></div>
+
+<script>
+
+var running = 0;  // sets to 1 if the clock i running or not. 
+
+function lcd() {
+	var settime = new Date();
+	var setsec = settime.getSeconds();
+	
+	// check if the clock is running. If not, this starts it
+	 if (running == 0){
+		minutes_splitter();
+	}  else {
+	if (setsec =>0){
+		// document.getElementById("demo5").innerHTML = 'setsec < 2';   // used for testing
+		// clean the <DIV>s
+		 document.getElementById("spname1").innerHTML = ""; // hours
+		 document.getElementById("spname2").innerHTML = ""; // hours
+		 document.getElementById("spname3").innerHTML = ""; // minutes
+		 document.getElementById("spname4").innerHTML = ""; // minutes
+		 document.getElementById("spname5").innerHTML = ""; // seconds
+		 document.getElementById("spname6").innerHTML = ""; // seconds
+		// then re-start the clock
+		 minutes_splitter();
+		} else {
+		 //  document.getElementById("demo5").innerHTML = 'setsec > 2, YO!';   // used for testing
+		} 
+	} 
+}
+
+setInterval(lcd,200);
+
+// **** Function below picks up the time, splits the numbers and run the function
+
+function minutes_splitter(){
+	var d = new Date();
+	var h = String(d.getHours());
+	var m = String(d.getMinutes());
+	var sec = String(d.getSeconds());
+	var hl = h.lenhth;	// length of hours
+	var ml = m.length;	// length of minutes
+	var secl = sec.length; // length of seconds
+	var hd1 = ""; // hd1 = hours digit 1, first digit
+	var hd2 = ""; // hd2 = hours digit 2, second digit
+	var md1 = ""; // md1 = minute digit 1, first digit
+	var md2 = ""; // md2 = minute digit 2, second digit
+	var sec1 = ""; // sec1 = seconds digit 1, first digit
+	var sec2 = ""; // sec2 = seconds digit 1, first digit
+	
+	running = 1; // sets that the clock is running
+
+	 if (hl < 2) {
+		var hd1 = "0";
+		var hd2 = h;
+		} else {
+		var hd1 = h.slice(0,1);
+		var hd2 = h.slice(1,2);
+		}
+	 
+	 	if (ml < 2) {
+		var md1 = "0";
+		var md2 = m;
+		} else {
+		var md1 = m.slice(0,1);
+		var md2 = m.slice(1,2);
+		}
+		
+		if (secl < 2) {
+		var sec1 = "0";
+		var sec2 = sec;
+		} else {
+		var sec1 = sec.slice(0,1);
+		var sec2 = sec.slice(1,2);
+		}
+	 // nst line is for testing, to be removed
+	 hd1 = Number(hd1);
+	// document.getElementById("demo4").innerHTML = "hd1=" + typeof(hd1) + ":hd2=" + hd2 + ":md1=" + md1 + ":md2=" + md2;
+	 // the following writes out the digit-tables
+	 buildTable(1,hd1);
+	 buildTable(2,hd2);
+	 buildTable(3,md1);
+	 buildTable(4,md2);
+	 buildTable(5,sec1);
+	 buildTable(6,sec2);
+}
+
+// ********************** Here we strat the LCD build ***************************
+
+const digit0 = { 	10: 1, 11: 1, 12: 1,
+					20: 1, 21: 0, 22: 1,
+					30: 1, 31: 0, 32: 1,
+					40: 1, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 1
+				}
+				
+const digit1 = { 	10: 0, 11: 1, 12: 1,
+					20: 0, 21: 0, 22: 1,
+					30: 0, 31: 0, 32: 1,
+					40: 0, 41: 0, 42: 1,
+					50: 0, 51: 0, 52: 1
+				}
+				
+const digit2 = { 	10: 1, 11: 1, 12: 1,
+					20: 0, 21: 0, 22: 1,
+					30: 0, 31: 1, 32: 1,
+					40: 1, 41: 0, 42: 0,
+					50: 1, 51: 1, 52: 1
+				}	
+				
+const digit3 = { 	10: 1, 11: 1, 12: 1,
+					20: 0, 21: 0, 22: 1,
+					30: 0, 31: 1, 32: 1,
+					40: 0, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 1
+				}	
+				
+const digit4 = { 	10: 0, 11: 0, 12: 1,
+					20: 0, 21: 1, 22: 1,
+					30: 1, 31: 0, 32: 1,
+					40: 1, 41: 1, 42: 1,
+					50: 0, 51: 0, 52: 1
+				}				
+				
+const digit5 = { 	10: 1, 11: 1, 12: 1,
+					20: 1, 21: 0, 22: 0,
+					30: 1, 31: 1, 32: 1,
+					40: 0, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 0
+				}	
+
+const digit6 = { 	10: 1, 11: 1, 12: 1,
+					20: 1, 21: 0, 22: 0,
+					30: 1, 31: 1, 32: 1,
+					40: 1, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 1
+				}
+				
+const digit7 = { 	10: 1, 11: 1, 12: 1,
+					20: 0, 21: 0, 22: 1,
+					30: 0, 31: 1, 32: 1,
+					40: 0, 41: 1, 42: 0,
+					50: 0, 51: 1, 52: 0
+				}
+
+const digit8 = { 	10: 1, 11: 1, 12: 1,
+					20: 1, 21: 0, 22: 1,
+					30: 1, 31: 1, 32: 1,
+					40: 1, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 1
+				}
+				
+const digit9 = { 	10: 1, 11: 1, 12: 1,
+					20: 1, 21: 0, 22: 1,
+					30: 1, 31: 1, 32: 1,
+					40: 0, 41: 0, 42: 1,
+					50: 1, 51: 1, 52: 1
+				}				
+				
+var digits = [digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9]
+
+// * function showing an 3x5 matrix of digits. "Value" is the value of the digit to show (0-9)
+// * ***************************************************************************************
+// * The folloing is given in the call for the buildTable function:
+// * idt (1,2,3,4,5,5,6 = id (for) TABLE, give the tables uniqe id's; 
+// * pos (number of left positioning), 
+// * value (number to show as i LCD digit. Picks hd1, hd2, md1, md2, sec1, sec2 from above
+// * ***************************************************************************************
+
+function buildTable(idt, value) 
+{
+
+var nRows = 5;						// number og rows
+var nCols = 3; 						// number of columns
+var i = 1;							// i is used for rows
+var j = 0;							// j is used for columns
+var text = "";						// not used right now...
+var num ="1";						// the number in the digit array; 1 for filled, 0 for white
+var selector = "";					// the place in the array to pick the value for variable "num"
+var color = "#f9a"; 				// The TD bgcolour. Is later set using an IF-statment
+var place = "spname" + String(idt); // Builds a variable that states the place for the TABLE. See <DIV>'s above.
+// var idt = "";					// idt = idTable, the id for the table, myTable1-myTable4
+
+  var x = document.createElement("TABLE");
+  
+  x.setAttribute("id", idt);
+  document.getElementById(place).appendChild(x);
+	for (; i < nRows+1; ) {
+		var myTR = "TR_" + i + idt;
+		var y = document.createElement("TR");
+		y.setAttribute("id", myTR);
+		document.getElementById(idt).appendChild(y);
+		
+		 for (; j < nCols; ) 
+			{
+			var z = document.createElement("TD");
+
+			selector = i.toString() + j.toString();   // picks the numbers in the digit arrays to match colour vs white TD. 1 is a filled TD, 0 is white
+			num = digits[value][selector];
+			
+			// the following uses the selector value to chose the color
+			if (num === 0){
+			color= "#999";
+			} else {
+			color= "#0e0";
+			}
+			
+			z.setAttribute("bgcolor", color); 	
+			z.setAttribute("id", "myCell");
+			var t = document.createTextNode("  ");  // tydligen måste vi skapa en textnod av vårt "content" för att bonka in det i cellen
+  
+			z.appendChild(t);						
+			document.getElementById(myTR).appendChild(z);	//adresserar vart någonstans elementet och dess innehåll skall in. 
+			j++;
+			}
+	i++;
+	j = 0;
+	}
+	idt = "";
+	place = "";
+}
+
+</script>
+</body>
+
+</html>
