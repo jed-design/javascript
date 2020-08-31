@@ -146,7 +146,7 @@ function minutes_splitter(){
 	var h = String(d.getHours());
 	var m = String(d.getMinutes());
 	var sec = String(d.getSeconds());
-	var hl = h.lenhth;	// length of hours
+	var hl = h.length;	// length of hours
 	var ml = m.length;	// length of minutes
 	var secl = sec.length; // length of seconds
 	var hd1 = ""; // hd1 = hours digit 1, first digit
@@ -315,10 +315,10 @@ var place = "spname" + String(idt); // Builds a variable that states the place f
 			
 			z.setAttribute("bgcolor", color); 	
 			z.setAttribute("id", "myCell");
-			var t = document.createTextNode("  ");  // tydligen måste vi skapa en textnod av vårt "content" för att bonka in det i cellen
+			var t = document.createTextNode("  ");  // tydligen mÃ¥ste vi skapa en textnod av vÃ¥rt "content" fÃ¶r att bonka in det i cellen
   
 			z.appendChild(t);						
-			document.getElementById(myTR).appendChild(z);	//adresserar vart någonstans elementet och dess innehåll skall in. 
+			document.getElementById(myTR).appendChild(z);	//adresserar vart nÃ¥gonstans elementet och dess innehÃ¥ll skall in. 
 			j++;
 			}
 	i++;
