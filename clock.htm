@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head><title>Clock</title>
+<style>
+body {
+  background-color: #ffffff;
+}
+
+table {
+	background-color: #000000; 
+	color: #ddff33;
+	width: 600px;
+  	border: 0px solid #777;
+    border-collapse: collapse;
+}
+
+td {
+	padding: 0px;
+	height: 12 px;
+	font-size: 12px;
+	border: 1px solid #777;
+    border-collapse: collapse;
+
+}
+
+td.seconds, td.minutes {
+	background-color: #ffffff;
+	text-color: #882200;
+	width: 10px;
+}
+
+td.hours {
+	background-color: #ffffff;
+	width: 24px;
+}
+
+.bg {
+	position: absolute;
+	z-index: 10;
+	left: 10px;
+	top: 60px;
+}
+
+.clock {
+	position: absolute;
+	z-index: 20;
+	left: 10px;
+	top: 60px;
+	background-color: #faff55;
+	opacity: 0.5;
+	
+}
+
+</style>
+</head>
+<body>
+
+<h1>JavaScript clock</h1>
+
+<!- ######### DIV for positioning, class BG as in background ######### ->
+<div class="bg">
+
+	<!- ######### tables for hours ######### ->
+	<table style="clock"><tr>
+		<script>
+		var i = 0;
+		while (i < 24) {
+		document.write ("<td class='hours'>&nbsp; </td>");
+		i++;
+		}
+	</script>
+	</tr></table>
+
+<!- ######### tables for minutes ######### ->
+	<table style="clock"><tr>
+		<script>
+		var i = 0;
+		while (i < 60) {
+		  document.write ("<td class='minutes'>&nbsp; </td>");
+		  i++;
+		}
+		</script>
+	</tr></table>
+
+<!- ######### tables for seconds ######### ->
+	<table style="clock"><tr>
+		<script>
+		var i = 0;
+		while (i < 60) {
+		  document.write ("<td class='seconds'>&nbsp;</td>");
+		  i++;
+		}
+		</script>
+	</tr></table>
+</div>
+<!- ######### div for the clock, class is clock ######### ->
+<div class="clock">
+<table>
+	<tr><td id="clock_hours" width="1" bgcolor="#eeee00">&nbsp; </td><td bgcolor="#dadada"> &nbsp;</td></tr>
+</table>
+
+<table>
+	<tr><td id="clock_minutes" width="1" bgcolor="#7f7f00">&nbsp; </td><td bgcolor="#dadada"> &nbsp;</td></tr>
+</table>
+<table>
+	<tr><td id="clock_seconds" width="1" bgcolor="#0000ff">&nbsp; </td><td bgcolor="#dadada"> &nbsp;</td></tr>
+</table>
+<script>
+function doDate()
+{
+    
+    var now = new Date();
+	var time_hour = 25 * (now.getHours());
+	var time_min = 10 * (now.getMinutes());
+	var time_sec = 10 * (now.getSeconds() + (now.getMilliseconds() / 1000));
+	
+	document.getElementById("clock_hours").width = time_hour;
+	document.getElementById("clock_minutes").width = time_min;
+	document.getElementById("clock_seconds").width = time_sec;
+	
+	// document.getElementById("time_min_print").innerHTML = time_min;
+	
+}
+
+setInterval(doDate, 100);
+
+</script>
+<div id="time_min_print"> </div>
+</div>
+
+
+
+</body>
+</html>
