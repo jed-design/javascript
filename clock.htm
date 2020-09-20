@@ -114,11 +114,23 @@ function doDate()
 	var time_min = 10 * (now.getMinutes());
 	var time_sec = 10 * (now.getSeconds() + (now.getMilliseconds() / 1000));
 	
-	document.getElementById("clock_hours").width = time_hour;
-	document.getElementById("clock_minutes").width = time_min;
-	document.getElementById("clock_seconds").width = time_sec;
+	// we can not have tables with width = 0, so when hour, minutes or seconds gets 0, that is set to one pixel.
+	if(now.getHours() < 1){
+		time_hour = "1px";
+	}
+	document.getElementById("clock_hours").width = time_hour + "px";
+	// set the minutes width value
+		if(now.getMinutes() < 1){
+		time_min = "1px";
+	}
+	// set the seconds width value
+	document.getElementById("clock_minutes").width = time_min + "px";
+	if(now.getSeconds() < 1){
+		time_sec = "1px";
+	}	
+	document.getElementById("clock_seconds").width = time_sec + "px";
 	
-	// document.getElementById("time_min_print").innerHTML = time_min;
+	// document.getElementById("time_min_print").innerHTML = now.getHours();	// line for testing
 	
 }
 
