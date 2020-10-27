@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+
+body {
+	height: 100%;
+}
+
+.outerMsgBox {
+	background-image: linear-gradient(45deg, #aaf, #eef, #aaf);
+	padding: 10px;
+	max-width: 300px;
+	border: 2px solid #337;
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	z-index: 100;
+	display: block;	
+}
+
+.innerMsgBox {
+	/* min-height:100px; */
+	min-width: 250px;
+	background-color: #fd8;
+	text-align: center;
+	padding: 10px;	
+	display: flex;
+    /* align-items: center; */
+	border: 1px solid #99f;
+	z-index: 101;
+	display: inherit;
+}
+
+.closeButton {
+	padding: 5px 10px 5px 10px;
+	border: 2px solid #33a;
+	background-color: #eb5;
+	margin: 5px;
+	display: inline-block;
+}
+
+.closeButton:hover {
+	background-color: #f6;
+}
+
+
+</style>
+
+<script>
+	function hideMsg (){
+		document.getElementById("outer").style.display = "none";
+	}
+	
+		function showMsg (msg){
+		document.getElementById("outer").style.display = "block";
+		document.getElementById("msg").innerHTML = msg + "<hr noshade><a href='#' onClick='hideMsg();' class='closeButton' >OK</a>";
+	}
+
+</script>
+
+
+<body>
+
+<div class="outerMsgBox" id="outer">
+	<div class="innerMsgBox" id="msg">Bla lots of text frcing multiline lots of text frcing multilinelots of text frcing multilinelots of text frcing multiline... <hr noshade>
+	<a href="#" onClick="hideMsg();"class='closeButton'>OK</a>	
+	</div>
+</div>
+
+<button type="button" onClick="showMsg('this is the message');">Click here!</button>
+</body>
+</html>
