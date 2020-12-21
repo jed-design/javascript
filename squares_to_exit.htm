@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Square transition to URL</title>
+<meta charset="utf-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <style>
+ html {
+	background-image: linear-gradient(180deg, #bec, #55d);
+	color: #339;
+	text-align: center;
+	height: 100%;
+ }
+ 
+.content {
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 36pt;
+}
+
+.link {
+	position: relative;
+	top: 10px;
+	width:	50px;
+	height: 50px;
+	border: 5px solid #339;
+	display: inline-block;
+	background-color: rgba(255,255,255,0);
+	transition: background-color;
+	transition-duration: 0.2s;
+}
+
+.link:hover {
+	background-color: #ddf;
+}
+ 
+ .square {
+	position: absolute;
+	z-index: 1000;
+	display: inline-block;
+	background-color: #eef;
+	color: #aa9;
+	box-sizing: border-box;
+	/* border: 1px solid #ddd; */
+ }
+ 
+ </style>
+  
+</head>
+<body>
+<div class="content">
+Exit by square transition...<br>
+Click here => <a href="#"  onClick="exit()"><div class="link"></div></a>
+</div>
+ <script>
+ var cols = 8;   		// number of squares horizontaly
+ var rows = 6;			// number of rows of squares
+ var time = 5; 			// the time between each DIV in ms, if the computer is fast enough
+ var colsArray = [];	// the array for the cols
+ var rowsObj = {};		// the Object for the rows ( needed for shuffeling )
+ var rowsArray = [];	// the array for the rows
+ var j = 0; 			// used for steping rows
+ var q = 0;				// a counter
+ 
+ 
+ // get the win width and sets the width on squares
+ var win_width = window.innerWidth;
+ var x = Math.floor(win_width/cols); 		// scale factor for cols
+ const xSize = x;
+ 
+ 
+ // get the win height sets the height on squares
+ var win_height = window.innerHeight;
+ var y = Math.floor(win_height/rows);		// scale factor for rows
+ const ySize = y;
+ 
+
+ // fills up the cols array. This is used later
+ let i = 0;
+ do {
+	colsArray.push(i);
+	i++;
+} while (i < cols);
+
+//  ***********************************************************************************
+//  **   Sorting up the rows 
+//  ***********************************************************************************
+
+
+var j;
+var tempArray = colsArray;
+for (j = 0; j < rows; j++) {
+	
+	var tag = "key" + j.toString();
+	
+	rowsObj[tag] = tempArray;
+	
+	// the cols values are to be shuffled. Thats done in a separate faunction
+	shuffle(rowsObj[tag], tag);
+	// this is returned as a JSON string, due to some phwx-up. It needs to get back to an array...
+	rowsObj[tag] = JSON.parse(rowsObj[tag]);
+	// push this into the rowsArray so we have Arrays for both cols and rows
+	rowsArray.push(rowsObj[tag]);
+}
+
+// *********************************************************
+// The shuffleing function:
+// *********************************************************
+	
+function shuffle(arra1, num) {
+
+    let ctr = arra1.length;
+    let temp = 0;
+    let index = 0;
+
+    // While there are elements in the array
+    while (ctr > 0) {
+// Pick a random index
+        index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+        ctr--;
+// And swap the last element with it
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }		
+
+	rowsObj[num] = JSON.stringify(arra1);	// needs to convert to text to avoid overwriting of previous array. Some bug cousing this.
+ 
+    return arra1;
+}
+// *********************************************************
+
+// make a function that picks up width and heigth values (position and size) for writing and writes the <div> using DOM
+
+function buildDiv(style, xPos){
+	var div = document.createElement("DIV");			
+	var t = document.createTextNode("");		// writes the xPos as text in the DIV
+	div.appendChild(t); 									// puts the text into the DIV
+	div.setAttribute("class", "square");					// sets the class attribute
+	div.setAttribute("style", style);						// sets the style attributes, provided as "style" variable
+
+	document.body.appendChild(div);							// prints the DIV 
+}
+// *********************************************************
+
+// this function controlls picks up a position and sends an order to print a DIV for that position
+
+function newBuild(){
+	// this function needs a stopper then all the DIVs are created. Thats fixed by a counter, q. Other wise it will run forever
+	if(q < (rows * cols)){
+	
+	// check row number, it needs to go from 0->rows-variable
+	if(j >= rows){
+		j = 0;			//	resets j to 0 if rows has runned all to the end. Could use modular instead?
+	}
+	// console.log(j);		// for test
+	// fetch the X and Y positions and multiply with scale factors
+
+		var xPos = (rowsArray[j].pop() + 0) * x; 		// gets the X position for the current row
+		var yPos = Number((j + 0) * y);					// gets the Y position (= current row)
+		let style = "height:" + y + "px; width:" + x + "px; left:" + xPos + "px; top:" + yPos + "px;";		// builds the style attribute
+				
+		buildDiv(style, xPos);		// runs the function that do the buildning
+		j++;						// count a row - done
+		q++;						// count a DIV done to keep track on when all DIVs are printed
+	} else {
+	return;							// stops then all DIVs are printed
+	}
+	if(q > ((rows * cols) - 1)){
+		window.open("http://www.yr.no", "_self");
+	}
+}
+
+function exit(){ setInterval(newBuild, time);	}		// do the DIV printing and keeps the timing.
+ 
+ 
+ </script>
+</body>
+</html>
