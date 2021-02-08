@@ -43,6 +43,7 @@ function wrapper(){
 	// we start to build the content below!
 	 spos = lineln;										// sets the spos, the cut position to start with
 	 
+	txt = txt.replace(/  /g, " ");								// cleans double spaces
 	txt = txt.replace(/\n|\r/g, "");							// cleans carrige returns.
 	
 	while (spos < ln){
