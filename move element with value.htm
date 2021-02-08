@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<style>
+#mydiv {
+  position: absolute;
+  left: 20px;
+  z-index: 9;
+  background-color: #f1f1f1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+}
+
+#mydivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+}
+
+#color {
+	background-color: #888800;
+	position: absolute;
+	left: 500px;
+	top: 100px;
+	width: 200px;
+	height: 200px;
+}
+
+
+</style>
+<body>
+
+<h1>Draggable DIV Element</h1>
+
+<p>Click and hold the mouse button down while moving the DIV element</p>
+
+<div id="mydiv">
+  <div id="mydivheader">Click here to move</div>
+  <p>Move</p>
+  <p>this</p>
+  <p>DIV</p>
+</div>
+
+<div id="xpos">  </div>
+
+<script>
+//Make the DIV element draggagle:
+dragElement(document.getElementById("mydiv"));
+
+// set limits:
+leftlim = 20;	// min left position
+drag = 255; 	// drag length, 255 is good for colour manipulation
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    // pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+    
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    // pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+   // pos4 = e.clientY;
+    // set the element's new position:
+    // elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+	newpos = (elmnt.offsetLeft - pos1);	// get the new position
+	hex_newpos = newpos.toString(16);	// get hex value
+	if (newpos > (drag + leftlim)){					// set limit to rigth
+		let newpos = (drag + leftlim);				// stops at limit
+		}
+	if (leftlim > newpos){					// sets limit to the left
+		let newpos = leftlim;					// stops at left limit
+		}
+	newcolor = "#8888" + hex_newpos;	
+	
+	
+	if ((newpos >= leftlim) && (newpos <= (drag + leftlim))){
+		elmnt.style.left = newpos + "px";
+		document.getElementById("color").style.backgroundColor = newcolor;
+		document.getElementById("xpos").innerHTML = newpos + "<br>";
+		document.getElementById("xpos").innerHTML += newcolor;
+	}
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+<div id="color" style="color">  bla bla </div>
+
+
+
+</body>
+</html>
