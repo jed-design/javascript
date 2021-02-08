@@ -43,11 +43,11 @@ function wrapper(){
 	// we start to build the content below!
 	 spos = lineln;										// sets the spos, the cut position to start with
 	 
+	txt = txt.replace(/\n|\r/g, "");							// cleans carrige returns.
+	
 	while (spos < ln){
 		move = txt.lastIndexOf(" ", spos);								// get the point to move the pointer to get to the end cut position.
 		sString = txt.slice(cpos, move);								// we cut out the substring
-		sString = sString.replace(/  /g, " ");							// cleans doubble spaces, carrige returns acts like spaces in the output
-		sString = sString.replace(/\n|\r/g, " ");						// cleans carrige returns.
 		filler = lineln-sString.length + 0;
 		output += sol + sString + "&nbsp;".repeat(filler) + eol;		// this is the arranged content
 		var bla = (sString + "&nbsp;".repeat(filler)).length;
