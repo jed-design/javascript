@@ -7,3 +7,7 @@ It is pretty straigth forward. The info for the weather stations is stored early
 At the bottom, there is a link to a norwegian site for weather forcasts for a lot of flying sites, most ly norway. 
 
 The design is made to be fast loading and easy to read, also on phones, in sun light. 
+
+Per today (2021-05-15) there is a version of the site up here: http://jed-design.com/fly.htm
+
+Share, and enjoy!
